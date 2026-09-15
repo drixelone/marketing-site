@@ -24,7 +24,7 @@ export function createRibbonGeometry(segments = 320) {
     const t = u + Math.PI / 2
     return new Vector3(
       2.48 * Math.cos(t),
-      0.08 * Math.cos(u) + 0.34 * bump(u, 1.02 * Math.PI, 0.38) - 0.15 * bump(u, 1.57 * Math.PI, 0.32),
+      0.08 * Math.cos(u) + 0.34 * bump(u, 1.02 * Math.PI, 0.38) - 0.18 * bump(u, 0.82 * Math.PI, 0.36) - 0.15 * bump(u, 1.57 * Math.PI, 0.32),
       1.64 * Math.sin(t),
     )
   }
@@ -36,7 +36,7 @@ export function createRibbonGeometry(segments = 320) {
     const tangent = centerAt(u + 0.0001).sub(centerAt(u - 0.0001)).normalize()
     const radial = new Vector3(Math.cos(t) / 2.48, 0, Math.sin(t) / 1.64).normalize()
     const up = new Vector3().crossVectors(tangent, radial).normalize()
-    const f = Math.max(0, Math.min(1, (u - Math.PI * 0.68) / (Math.PI * 0.9)))
+    const f = Math.max(0, Math.min(1, (u - Math.PI * 0.62) / (Math.PI * 1.05)))
     const smooth = f * f * (3 - 2 * f)
     const twist = Math.PI / 2 + Math.PI * smooth + 0.12 * Math.sin(u)
     const wide = radial.clone().multiplyScalar(Math.cos(twist)).addScaledVector(up, Math.sin(twist))
@@ -44,7 +44,7 @@ export function createRibbonGeometry(segments = 320) {
     for (const [w, d] of section) {
       uvs.push(i / segments, (w + halfWidth) / (halfWidth * 2))
       const crown = 0.09 * (1 - (w / halfWidth) ** 2) * Math.cos(u / 2)
-      const widthScale = 0.88 + 0.12 * (1 - Math.cos(u)) / 2 + 0.18 * bump(u, 1.22 * Math.PI, 0.39) - 0.22 * bump(u, 1.57 * Math.PI, 0.30)
+      const widthScale = 0.88 + 0.12 * (1 - Math.cos(u)) / 2 + 0.18 * bump(u, 1.22 * Math.PI, 0.39) + 0.42 * bump(u, 0.82 * Math.PI, 0.36) - 0.22 * bump(u, 1.57 * Math.PI, 0.30)
       const p = center.clone().addScaledVector(wide, w * widthScale).addScaledVector(normal, d + crown)
       positions.push(p.x, p.y, p.z)
     }

@@ -39,7 +39,7 @@ npx playwright install chromium
 npm test
 ```
 
-The tests cover desktop (1536×1024), mobile (390×844), narrow mobile (320×640), overflow, loaded assets, console errors, pointer response, reduced motion, page visibility and unavailable/lost WebGL. Screenshots are written to `test-results/`.
+The tests cover desktop (1536×1024), mobile (390×844), narrow mobile (320×640), laptop (1366×768), short desktop (1280×600), landscape (844×390 and 667×375), both vertical and horizontal overflow, loaded assets, console errors, pointer response, reduced motion, page visibility and unavailable/lost WebGL. Screenshots are written to `test-results/`. The page uses the dynamic viewport height and allocates remaining space to the ribbon, so the complete composition fits on screen without scrolling.
 
 Set `CHROME_PATH=/path/to/chrome` to use an installed Chrome instead of Playwright Chromium. Software WebGL flags allow reproducible rendering on machines without a GPU. Actual GPU rendering can vary slightly.
 
@@ -84,6 +84,6 @@ Canvas resolution and render scheduling follow the [React Three Fiber Canvas API
 
 ## Verified result
 
-Production build succeeded and all five Playwright tests passed in local Chrome with software WebGL. Saved reference-comparison captures are in `design/previews/` (desktop, mobile and small mobile). Tests verify hidden-tab frames remain unchanged and resume afterward; reduced-motion frames remain stable while moving the cursor, allowing only negligible GPU color rounding. No browser console errors were reported in the layout checks.
+Production build succeeded and all nine Playwright tests passed in local Chrome with software WebGL. Saved reference-comparison captures are in `design/previews/` (desktop, mobile and small mobile). Tests verify hidden-tab frames remain unchanged and resume afterward; reduced-motion frames remain stable while moving the cursor, allowing only negligible GPU color rounding. No browser console errors were reported in the layout checks.
 
 Vite reports a size advisory for the lazy-loaded 3D chunk (about 255 KB gzip). The HTML/React page and static fallback load independently of that chunk. No deployment or DNS mutation was performed.

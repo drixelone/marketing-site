@@ -234,3 +234,37 @@ footer p:last-child {
         transition: none !important;
     }
 }
+
+/* Allocate the actual viewport height between copy, artwork and footer.
+   The canvas scales into the remaining space; no content is hidden to stop scrolling. */
+.page { height: 100dvh; min-height: 0; }
+.header { flex: 0 0 auto; padding-top: clamp(14px, 4.3dvh, 44px); }
+main { min-height: 0; }
+.intro { flex: 0 0 auto; padding-top: clamp(16px, 7.3dvh, 75px); }
+h1 { font-size: min(9.1vw, 13.65dvh, 140px); margin-top: clamp(12px, 2.4dvh, 25px); }
+.supporting { font-size: clamp(16px, min(2.1vw, 3.2dvh), 32px); }
+.ribbon-stage { flex: 1 1 0; height: auto; min-height: 0; max-height: 535px; margin-top: 8px; }
+footer { flex: 0 0 auto; padding-top: 8px; padding-bottom: clamp(14px, 4.6dvh, 48px); }
+@media (max-width: 700px) {
+  .intro { padding-top: clamp(16px, 7dvh, 60px); }
+  h1 { font-size: min(11.8vw, 10dvh); margin: clamp(12px, 2.6dvh, 23px) 0 clamp(8px, 1.8dvh, 16px); }
+  .supporting { font-size: clamp(15px, 4.9vw, 20px); }
+  .ribbon-stage { max-height: 420px; margin-top: 8px; }
+  footer { padding-bottom: clamp(12px, 3.3dvh, 28px); }
+}
+@media (max-height: 500px) and (min-width: 701px) {
+  .logo { width: 190px; height: 38px; }
+  .brand-line { font-size: 9px; }
+  .eyebrow { font-size: 10px; letter-spacing: .3em; }
+  .intro { padding-top: 12px; }
+  h1 { margin-top: 8px; }
+  footer p:first-child { font-size: 9px; }
+  footer p:last-child { font-size: 11px; }
+}
+@media (max-height: 500px) and (max-width: 700px) {
+  .logo { width: 150px; height: 32px; }
+  .eyebrow { font-size: 9px; letter-spacing: .2em; }
+  .intro { padding-top: 10px; }
+  h1 { margin: 8px 0; }
+  footer p:first-child { max-width: none; font-size: 8px; }
+}

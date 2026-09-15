@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
 
-for (const [name, width, height] of [['desktop', 1536, 1024], ['mobile', 390, 844], ['small-mobile', 320, 640]] as const) {
+for (const [name, width, height] of [['desktop', 1536, 1024], ['mobile', 390, 844], ['small-mobile', 320, 640], ['laptop', 1366, 768], ['short-desktop', 1280, 600], ['landscape', 844, 390], ['small-landscape', 667, 375]] as const) {
   test(`${name}: layout, assets and rendering`, async ({ page }) => {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
@@ -13,6 +13,9 @@ for (const [name, width, height] of [['desktop', 1536, 1024], ['mobile', 390, 84
     await page.waitForTimeout(1200)
     await expect(page.getByRole('heading', { name: 'Coming soon.' })).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight)).toBe(true)
+    const footer = await page.locator('footer').boundingBox()
+    expect(footer!.y + footer!.height).toBeLessThanOrEqual(height + 1)
     expect(await page.locator('.logo img').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true)
     const heading = await page.locator('.supporting').boundingBox()
     const ribbon = await page.locator('.ribbon-stage').boundingBox()
