@@ -1,0 +1,11 @@
+import { chromium } from '@playwright/test'
+const browser = await chromium.launch({executablePath:process.env.CHROME_PATH,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']})
+const page = await browser.newPage({viewport:{width:1536,height:1024},reducedMotion:'reduce'})
+page.on('console',m=>{if(m.type()==='error')console.log(m.text())})
+page.on('pageerror',e=>console.log(e.message))
+await page.goto(process.env.PREVIEW_URL || 'http://localhost:4173')
+await page.waitForTimeout(2500)
+await page.screenshot({path:'/tmp/drixel-initial.png',fullPage:true})
+await page.addStyleTag({content:'.page, body, :root {background:transparent !important}'})
+await page.locator('canvas').screenshot({path:'public/assets/ribbon-fallback.png',omitBackground:true})
+await browser.close()

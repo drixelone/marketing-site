@@ -1,0 +1,236 @@
+:root {
+    font-family: "DM Sans", Arial, sans-serif;
+    color: #151f28;
+    background: #fff;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+}
+p {
+    margin: 0;
+}
+.page {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    isolation: isolate;
+    background: radial-gradient(
+        ellipse 65% 37% at 50% 85%,
+        #eee8fc 0%,
+        #f7f3ff 45%,
+        transparent 100%
+    );
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 44px 4.2vw 0;
+    gap: 24px;
+}
+.logo {
+    width: 310px;
+    height: 62px;
+    position: relative;
+    flex-shrink: 0;
+}
+.logo img {
+    position: absolute;
+    width: 116.3%;
+    height: auto;
+    max-width: none;
+    left: -8.6%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.brand-line {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #515361;
+    font-weight: 500;
+}
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+}
+.intro {
+    text-align: center;
+    padding: 75px 20px 0;
+    position: relative;
+    z-index: 1;
+}
+.eyebrow {
+    font-size: 14px;
+    letter-spacing: 0.56em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #515361;
+}
+h1 {
+    font-size: clamp(64px, 9.1vw, 140px);
+    letter-spacing: -0.065em;
+    line-height: 1.12;
+    font-weight: 700;
+    margin: 25px 0 0;
+}
+h1 span {
+    color: #7b50ff;
+}
+.supporting {
+    font-size: clamp(20px, 2.1vw, 32px);
+    letter-spacing: -0.025em;
+    color: #60616e;
+}
+.ribbon-stage {
+    position: relative;
+    width: min(1120px, 90vw);
+    height: clamp(290px, 33vw, 505px);
+    margin: 8px auto 0;
+    flex-shrink: 0;
+    pointer-events: none;
+    mask-image: linear-gradient(#000 94%, transparent);
+}
+.ribbon-fallback {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    inset: 0;
+}
+.ribbon-fallback.is-hidden {
+    visibility: hidden;
+}
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 10px 4.2vw 48px;
+    color: #565867;
+}
+footer p:first-child {
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 12px;
+}
+footer p:last-child {
+    font-size: 15px;
+    letter-spacing: 0.08em;
+}
+@media (min-width: 1600px) {
+    .intro {
+        padding-top: 90px;
+    }
+    .ribbon-stage {
+        margin-top: 20px;
+    }
+    footer {
+        padding-bottom: 45px;
+    }
+}
+@media (max-width: 700px) {
+    .header {
+        padding: 26px 6vw 0;
+    }
+    .logo {
+        width: 190px;
+        height: 42px;
+    }
+    .brand-line {
+        font-size: 8px;
+        letter-spacing: 0.16em;
+        max-width: 115px;
+        line-height: 1.8;
+        text-align: right;
+    }
+    .intro {
+        padding-top: 75px;
+    }
+    .eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.32em;
+    }
+    h1 {
+        font-size: clamp(52px, 11.8vw, 83px);
+        margin: 23px 0 16px;
+        letter-spacing: -0.06em;
+        white-space: nowrap;
+    }
+    .supporting {
+        font-size: 20px;
+    }
+    .ribbon-stage {
+        width: 100%;
+        height: 260px;
+        margin-top: 20px;
+    }
+    footer {
+        padding: 22px 6vw 28px;
+        gap: 15px;
+    }
+    footer p:first-child {
+        font-size: 9px;
+        letter-spacing: 0.17em;
+        max-width: 190px;
+        line-height: 1.8;
+    }
+    footer p:last-child {
+        font-size: 11px;
+        white-space: nowrap;
+        letter-spacing: 0.02em;
+    }
+}
+@media (max-width: 380px) {
+    h1 {
+        font-size: 46px;
+    }
+    .intro {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .logo {
+        width: 160px;
+    }
+    .brand-line {
+        font-size: 7px;
+    }
+    .intro {
+        padding-top: 60px;
+    }
+    .eyebrow {
+        font-size: 9px;
+        letter-spacing: 0.22em;
+    }
+    .supporting {
+        font-size: 18px;
+    }
+    .ribbon-stage {
+        height: 230px;
+    }
+    footer {
+        gap: 12px;
+    }
+    footer p:first-child {
+        max-width: 160px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
