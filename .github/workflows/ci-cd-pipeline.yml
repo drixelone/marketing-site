@@ -85,25 +85,20 @@ jobs:
   # JOB 3: Mirror (Runs ONLY on push to main branch)
   # ---------------------------------------------------------
   mirror:
-    if: |
-      github.repository == 'drixelone/marketing-site/' && 
-      github.event_name == 'push' &&
-      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    
+  
     steps:
       - name: Checkout Org Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
-
+  
       - name: Push to Personal Bridge Repo
         env:
           PERSONAL_TOKEN: ${{ secrets.DRIXELONE_MIRROR_TOKEN }}
         run: |
-          unset GITHUB_TOKEN
           git config --global user.email "tech@drixelone.com"
           git config --global user.name "drixel-one-bot"
-          git remote add vercel_bridge https://drixelone-tech:${PERSONAL_TOKEN}@github.com/drixelone-tech/marketing-site-deploy.git || true
+          git remote add vercel_bridge "https://drixelone-tech:${PERSONAL_TOKEN}@github.com/drixelone-tech/marketing-site-deploy.git"
           git push vercel_bridge main --force
