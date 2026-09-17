@@ -1,6 +1,6 @@
 # DrixelOne coming soon
 
-A single-page React 19 / TypeScript / Vite site with a procedural Three.js ribbon, React Three Fiber and Drei. No backend, tracking, signup or third-party runtime requests.
+A single-page React 19 / TypeScript / Vite site with the supplied GLB ribbon rendered by Three.js, React Three Fiber and Drei. No backend, tracking, signup or third-party runtime requests.
 
 ## Local development
 
@@ -26,10 +26,10 @@ The deployable output is `dist/`. Preview is a local verification server, not a 
 - `public/assets/side-by-side_light-no-bg.png` is an unchanged copy of the supplied horizontal logo. CSS compensates for its transparent margins without stretching or recreating the artwork.
 - The favicon uses the supplied light symbol.
 - DM Sans 400/500/700 is self-hosted through `@fontsource/dm-sans`, including its font license in that package. The brand book permits using one family consistently. No Garet font was supplied.
-- `src/ribbonGeometry.ts` sweeps a rounded, thin rectangular section along an elliptical loop with a half twist concentrated across the rear of the loop. The front remains upright, with crowned faces and rounded edges. It includes actual sidewalls and smoothed seam normals; it is not a torus or a model download.
-- `src/RibbonScene.tsx` contains a locally generated studio environment, satin microtexture, ground shadow, bounded floating/rotation and damped pointer tilt. There are no remote environment or model dependencies.
-- Motion stops for reduced-motion preferences. Rendering stops while the document is hidden. Mobile uses fewer geometry segments, a smaller environment/shadow map and DPR capped at 1.25; desktop caps at 1.75. Touch devices retain gentle ambient movement without pointer tilt.
-- `public/assets/ribbon-fallback.png` is a transparent export of the same 3D scene. It appears while the scene loads, if WebGL2 is unavailable, or if the context is lost. Text and logo remain ordinary accessible HTML outside the decorative canvas.
+- `public/assets/drixel-ribbon.glb` is an unchanged copy of `design/drixel-ribbon.glb` (about 1.46 MB), loaded locally with Drei's `useGLTF`. It includes the authored satin violet material, normal map and roughness map. The supplied geometry and textures are preserved; only the display orientation and studio lighting are configured in the scene. The previous procedural ribbon has been removed.
+- `src/RibbonScene.tsx` contains a locally generated studio environment, ground shadow, bounded floating/rotation and damped pointer tilt. There are no remote environment or model dependencies.
+- Motion stops for reduced-motion preferences. Rendering stops while the document is hidden. Mobile uses a smaller environment/shadow map and DPR capped at 1.25; desktop caps at 1.75. Touch devices retain gentle ambient movement without pointer tilt.
+- `public/assets/ribbon-fallback.png` is a transparent export of the same 3D scene. It appears while the scene loads, if WebGL2 is unavailable, if model loading fails, or if the context is lost. Text and logo remain ordinary accessible HTML outside the decorative canvas.
 - The copyright year is calculated at runtime.
 
 ## Browser verification
@@ -87,3 +87,7 @@ Canvas resolution and render scheduling follow the [React Three Fiber Canvas API
 Production build succeeded and all nine Playwright tests passed in local Chrome with software WebGL. Saved reference-comparison captures are in `design/previews/` (desktop, mobile and small mobile). Tests verify hidden-tab frames remain unchanged and resume afterward; reduced-motion frames remain stable while moving the cursor, allowing only negligible GPU color rounding. No browser console errors were reported in the layout checks.
 
 Vite reports a size advisory for the lazy-loaded 3D chunk (about 255 KB gzip). The HTML/React page and static fallback load independently of that chunk. No deployment or DNS mutation was performed.
+
+## Brand-book review
+
+Reviewed the supplied 2026 brand book, particularly pages 5–10 and 14: the complete light-mode logo is preserved and uniformly scaled; the page uses white and pale lilac, ink `#151F28`, violet `#7B50FF`, and DM Sans 700 headings with 400 body copy. The supplied GLB's linear base color converts to the brand violet. Garet is named for reading text but no font file was supplied; DM Sans is used consistently as the book also permits. The page retains generous clear space and restrained effects.
