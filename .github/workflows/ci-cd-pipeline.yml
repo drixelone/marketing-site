@@ -1,0 +1,109 @@
+name: CI and Deployment Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  # ---------------------------------------------------------
+  # JOB 1: Unit Tests (Runs on Pull Requests to main)
+  # ---------------------------------------------------------
+  # unit-tests:
+  #   if: github.repository == 'drixelone/marketing-site/' && github.event_name == 'pull_request'
+  #   runs-on: blacksmith-4vcpu-ubuntu-2404
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
+  #         cache: 'npm'
+
+  #     - name: Install npm dependencies
+  #       run: npm ci --prefer-offline --no-audit --no-fund
+
+  #     - name: Run Unit Tests (RBAC, Flags & Route Matrices)
+  #       run: npm run test
+
+  # ---------------------------------------------------------
+  # JOB 2: Acceptance Tests & Build Verification (Runs on PRs)
+  # ---------------------------------------------------------
+  # acceptance-tests:
+  #   if: github.repository == 'hb-devs-org/healing_botanicals' && github.event_name == 'pull_request'
+  #   runs-on: blacksmith-4vcpu-ubuntu-2404
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
+  #         cache: 'npm'
+
+  #     - name: Install npm dependencies
+  #       run: npm ci --prefer-offline --no-audit --no-fund
+
+  #     - name: Build Next.js Application
+  #       run: npm run build
+  #       env:
+  #         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  #         NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+  #     - name: Cache Playwright Browsers
+  #       uses: actions/cache@v4
+  #       id: playwright-cache
+  #       with:
+  #         path: ~/.cache/ms-playwright
+  #         key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+
+  #     - name: Install Playwright Browsers & OS Dependencies
+  #       run: npx playwright install --with-deps chromium
+
+  #     - name: Run E2E Acceptance Tests
+  #       run: npm run test:e2e
+  #       env:
+  #         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  #         NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+  # ---------------------------------------------------------
+  # JOB 3: Mirror (Runs ONLY on push to main branch)
+  # ---------------------------------------------------------
+  mirror:
+    if: |
+      github.repository == 'drixelone/marketing-site/' && 
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    steps:
+      - name: Checkout Org Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false 
+
+      - name: Push to Personal Bridge Repo
+        env:
+          PERSONAL_TOKEN: ${{ secrets.DRIXELONE_TOKEN }}
+        run: |
+          unset GITHUB_TOKEN
+          git config --global user.email "tech@drixelone.com"
+          git config --global user.name "drixel-one-bot"
+          git remote add vercel_bridge https://drixelone-tech:${PERSONAL_TOKEN}@github.com/drixelone-tech/marketing-site-deploy.git || true
+          git push vercel_bridge main --force
