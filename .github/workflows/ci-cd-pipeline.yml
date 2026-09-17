@@ -100,7 +100,7 @@ jobs:
 
       - name: Push to Personal Bridge Repo
         env:
-          PERSONAL_TOKEN: ${{ secrets.DRIXELONE_TOKEN }}
+          PERSONAL_TOKEN: ${{ secrets.DRIXELONE_MIRROR_TOKEN }}
         run: |
           unset GITHUB_TOKEN
           git config --global user.email "tech@drixelone.com"
