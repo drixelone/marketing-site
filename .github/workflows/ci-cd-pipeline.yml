@@ -18,7 +18,7 @@ jobs:
   # JOB 1: Unit Tests (Runs on Pull Requests to main)
   # ---------------------------------------------------------
   # unit-tests:
-  #   if: github.repository == 'drixelone/marketing-site/' && github.event_name == 'pull_request'
+  #   if: github.repository == 'drixelone/marketing-site' && github.event_name == 'pull_request'
   #   runs-on: blacksmith-4vcpu-ubuntu-2404
 
   #   steps:
@@ -41,7 +41,7 @@ jobs:
   # JOB 2: Acceptance Tests & Build Verification (Runs on PRs)
   # ---------------------------------------------------------
   # acceptance-tests:
-  #   if: github.repository == 'hb-devs-org/healing_botanicals' && github.event_name == 'pull_request'
+  #   if: github.repository == 'drixelone/marketing-site' && github.event_name == 'pull_request'
   #   runs-on: blacksmith-4vcpu-ubuntu-2404
 
   #   steps:
@@ -82,23 +82,27 @@ jobs:
   #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
   # ---------------------------------------------------------
-  # JOB 3: Mirror (Runs ONLY on push to main branch)
+  # JOB 3: Mirror (Runs ONLY on push to main in dev repo)
   # ---------------------------------------------------------
   mirror:
+    if: github.repository == 'drixelone/marketing-site'
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout Org Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
-  
+
       - name: Push to Personal Bridge Repo
         env:
           PERSONAL_TOKEN: ${{ secrets.DRIXELONE_MIRROR_TOKEN }}
         run: |
           git config --global user.email "tech@drixelone.com"
           git config --global user.name "drixel-one-bot"
-          git remote add vercel_bridge "https://drixelone-tech:${PERSONAL_TOKEN}@github.com/drixelone-tech/marketing-site-deploy.git"
+
+          git remote add vercel_bridge \
+            "https://drixelone-tech:${PERSONAL_TOKEN}@github.com/drixelone-tech/marketing-site-deploy.git"
+
           git push vercel_bridge main --force
